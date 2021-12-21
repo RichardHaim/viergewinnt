@@ -1,3 +1,14 @@
-Das alt bekannte Spiel "Vier Gewinnt" ist ein Zweipersonen-Strategiespiel mit dem Ziel, als Erster vier der eigenen Spielsteine in eine Linie zu bringen. In unsere Version ist der Gegner eine KI.
-Regeln: Das Spiel wird auf einem senkrecht stehenden hohlen Brett gespielt, in der die Spieler nach der Reihe Steine hineinfallen lassen. Gewinner ist jener, der es als erster schafft, vier oder mehr seiner Steine waagrecht, senkrecht oder Diagonal in eine Linie zu bringen.
-How to Start the Game: ...
+# **Connect Four** #
+## ***Rules:***
+Connect-Four is a tic-tac-toe-like two-player game in which players alternately place pieces on a vertical board 7 columns across and 6 rows high. Each player uses pieces of a particular color(in our version of the game black and red), and the object is to be the first to obtain four pieces in a horizontal, vertical or diagonal line. Becausethe board is vertical, pieces inserted in a given column always drop to the lowest unoccupied row of that column. As soon as a column contains 6 pieces, it is full and no other piece can be placed in the collumn. 
+
+Both players begin with 21 identical pieces and **the first player to achieve a line of four connected pieces wins the game**. If all 42 pieces are played and no player placed four pieces in a row, the game is drawn.
+
+The story behind the game can be looked up here.(https://en.wikipedia.org/wiki/Connect_Four)
+
+### ***How to start our game:***
+
+1. first 
+2. second 
+3. third 
+4. ... 
