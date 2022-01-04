@@ -1,18 +1,14 @@
-def startup():
+def titlescreen():
     """
-    prints title screen
-
-    Parameters
-    -------
-    none
+    add docstring
 
     Returns
     -------
-    print of titlescreen
-    """
 
-    print(f'''
-    ***********************************
-    XOXO        4 gewinnt          XOXO
-    ***********************************
-    ''')
+    """
+    title = ('''
+***********************************
+XOXO        4 gewinnt          XOXO
+***********************************
+''')
+    return print(title)
