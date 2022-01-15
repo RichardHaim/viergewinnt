@@ -43,7 +43,7 @@ def loser():
     """
     print(f'''
     ******************************************
-    I am sorry, the KI won :/
+    I am sorry, the AI won :/
     ******************************************
 
     If you want to play another round press 'y'
