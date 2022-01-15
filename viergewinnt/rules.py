@@ -8,6 +8,3 @@ If none reaches to put 4 pieces in a line, its a draw.
 ''')
 
     return print (rules)
-
-if __name__ == '__main__':
-    rules_set()
