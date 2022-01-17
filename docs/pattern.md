@@ -1,0 +1,3 @@
+#Aufgabe:
+Erstellen Sie eine Markdown Datei pattern.md in der Sie ein Design Pattern Ihrer Wahl in eigenen Worten umschreiben. Muss nicht extrem detailliert sein, sondern nur ganz allgemein Problem und Umsetzung der Lösung bzw. Idee dahinter beschreiben. Mögliche Quelle: https://refactoring.guru/design-patterns/catalog
+Umfang ungefähr 3⁄4 A4 Seite – es ist kein Problem wenn Sie das Pattern noch nicht ganz genau im Detail verstehen. Direkte 1 zu 1 Übersetzungen oder Übernahmen sind nicht erwünscht – können natürlich auch eigene Grafiken zur Unterstützung einbeziehen.
