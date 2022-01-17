@@ -2,7 +2,6 @@
 Description of implementation
 ## How we implemented the startup of the game
 - The titlescreen had to be as simple as possible so we did that with a simple print function and implemented it to the main file.
-- The playercheck has been implemented also with a simple input function because its easy to use, easy to understand for the player and also not hard to code for us.
 - The playercheck has been implemented also with a simple input function because its easy to use, easy to understand for the player. By pressing "1" you'll be playing against AI and by pressing "2" you'll be playing against another player.
 - For clarification, which player begins, next move etc. you have to put in your name. Meanwhile the game, it shows the name of the player which has to do a move. We also use the variable for the end screen.
 ## Game itself
