@@ -1,5 +1,6 @@
 from rules import *
 from startup_screen import *
+import random
 import os
 
 
@@ -15,21 +16,72 @@ class Playfield():
             [0, 0, 0, 0, 0, 0],  # row 6
             [0, 0, 0, 0, 0, 0],  # row 5
             [0, 0, 0, 0, 0, 0],  # row 4
-            [0, 0, 0, 0, 0, 0],  # row 3
-            [0, 0, 0, 0, 0, 0],  # row 2
-            [0, 0, 0, 0, 0, 0]  # bottom row
+            [1, 1, 0, 0, 0, 0],  # row 3
+            [1, 2, 1, 0, 0, 0],  # row 2
+            [2, 2, 2, 1, 0, 0]  # bottom row
         ]
         return play_data
 
 
 
-    def winner_check(self, p_data, p_name):
-#TODO write winner check
-# win = 4 in row; 4 in column, 4 diagonal
-# needs to return: name of winner + call endgame
 
-        pass
+    def winner_check(self, p_data, p_name, p_ID):
+        eg = Endgame()
 
+        # check 4 in row
+        for row in p_data:
+            in_a_row = 0
+            for col in row:
+                if col == p_ID:
+                    in_a_row +=1
+                    if in_a_row == 4:
+                        eg.winselector(p_ID, p_name)
+
+
+        # check 4 in column
+        col = 0
+        while col <= 5:
+            in_a_row = 0
+            row = 0
+            while row <= 6:
+                if p_data[row][col] == p_ID:
+                    in_a_row += 1
+                    if in_a_row == 4:
+                        eg.winselector(p_ID, p_name)
+                row += 1
+            col += 1
+
+        # TODO 4 diagonal bugfix
+        # check 4 in diagonal links oben nach rechts unten
+        # start links oben, solange bis spalte 3 (index 2) erreicht und nur bis zeile 4 (index 3)
+        # col: start 0, end <= 2
+        # row: start 0, end <= 3
+        # S
+        #   x
+        #     x
+        #       x
+        col = 0
+        while col <= 2:
+            in_a_row = 0
+            row = 0
+            i = 0
+            while row <= 3:
+                if p_data[row][col + i] == p_ID:
+                    in_a_row += 1
+                    if in_a_row == 4:
+                        eg.winselector(p_ID, p_name)
+                row += 1
+                i += 1
+            col += 1
+
+        # TODO 4 diagonal implement
+        # check 4 in diagonal rechts oben nach links unten
+        # col: start 0, end <= 2
+        # row: start 6, end <= 4
+        #       x
+        #     x
+        #   x
+        # S
 
 
     def play_data_update(self, selected_field, p_data, p_name, p_ID):
@@ -41,7 +93,6 @@ class Playfield():
         p_move
         """
 
-        # TODO 1) check, if selected column is free to select (max-row)
         notfinished = True
         while notfinished:
             line = 6
@@ -76,7 +127,7 @@ class Playfield():
             for pos in row:
                 if pos == 1:
                     playfield[playfield_row][playfield_pos] = "X"
-                if pos == 2:
+                if pos == 2 or pos == 3:
                     playfield[playfield_row][playfield_pos] = "O"
                 playfield_pos += 2
             playfield_row += 1
@@ -184,11 +235,30 @@ class Endgame():
     '''
 
 
-    def non_draw(self, p_name):
+    def winselector(self, p_ID, p_name):
+        if p_ID < 3:
+            self.human_win(p_name)
+        elif p_ID == 3:
+            self.ai_win(p_name)
+        else:
+            self.draw()
+
+
+
+    def human_win(self, p_name):
 
         print(f'''
         ******************************************
-        CONGRATULATIONS!! PLAYER {p_name} has won!
+        CONGRATULATIONS!! PLAYER {p_name} did win!
+        ******************************************''')
+        exit()
+
+
+    def ai_win(self, p_name):
+
+        print(f'''
+        ******************************************
+        I am sorry {p_name}, the computer did win.
         ******************************************''')
         exit()
 
@@ -200,6 +270,7 @@ class Endgame():
         Oh no, there is no winner
         ******************************************''')
         exit()
+
 
 
 
@@ -232,6 +303,8 @@ class Game():
 
 
     def gameloop_ai(self):
+        # p_ID for AI = 3
+        # p_ID for human = 1
         pass
 
 
@@ -243,23 +316,23 @@ class Game():
         p_ID = 1
         p_name_cur = p1_name
         p_data = pf.playdata_init()
+        pf.print_playfield(p_data)
+
         notfinished = True
         while notfinished:
-            pf.cleansreen()
-            pf.print_playfield(p_data)
             selection = p.player_move(p_name_cur)
             p_data = pf.play_data_update(selection, p_data, p_name_cur, p_ID)
+            pf.cleansreen()
+            pf.print_playfield(p_data)
+            pf.winner_check(p_data, p_name_cur, p_ID)
+
             p_name_cur = p.player_change(p_ID, p1_name, p2_name)
-
-#TODO put here win-check
-
             if p_ID == 1:
                 p_ID = 2
             else:
                 p_ID = 1
 
-# HIER ENDET DIE SCHLEIFE !
-            #notfinished = not notfinished
+
 
 
 
