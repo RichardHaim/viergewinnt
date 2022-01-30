@@ -1,26 +1,17 @@
 '''
 CHANGES:
-moved play_field from playfield_init to the_game + removed playfield_init --> will be updated in the_game
-added rules
-added input for player moves
+add play_data_update
 '''
 
-import startup_screen
-import end_screen
-import rules
+import startup_screen, end_screen, rules
 
 
-def playfield_print(play_data: list):
-    """
-    add docstring
+def playfield_print(play_data):
+    """prints the played moves onto the playfield
 
-    column references in playfield >>
-        1 == 1 >> diff 0
-        2 == 3 >> diff 1
-        3 == 5 >> diff 2
-        4 == 7 >> diff 3
-        5 == 9 >> diff 4
-        6 == 11 >> diff 5
+    The play_data is stored in a format that is convenient to use for programming,
+    but does not look good when printing. This method adds all moves to the playfield,
+    so the moves can be printed in an easy to read format.
 
     Returns
     -------
@@ -40,6 +31,7 @@ def playfield_print(play_data: list):
 
     playfield_pos = 1
     playfield_row = 0
+
     for row in play_data:
         for pos in row:
             if pos == 1:
@@ -53,29 +45,58 @@ def playfield_print(play_data: list):
     for row in playfield:
         listToStr = ' '.join(map(str,row))
         print(listToStr)
+
     print("")
 
 
 
 
-def player_move():
-    field:int = 0
+def player_move(actual_player):
+    #field = 0
     try:
-        field = int(input(f'Please enter the column you want to place your move (1 - 6): '))
+        field = int(input(f'{actual_player}, please enter the column you want to place your move (1 - 6): '))
         if field >= 1 and field <= 6:
             return field
         else:
             print(f'Your input is not valid, please enter a number from 1 to 6')
-            player_move()
+            player_move(actual_player)
     except:
         print(f'Your input is not valid')
-        player_move()
+        player_move(actual_player)
+
+
+
+
+def play_data_update(field, play_data, actual_player, player_fig):
+    """Checks if selected column is free to select + places move
+
+    Returns
+    -------
+    play_data
+    player_move
+    """
+
+    # TODO 1) check, if selected column is free to select (max-row)
+    line = 6
+    while line >= 0:
+        if play_data[line][field-1] == 0:
+            play_data[line][field-1] = player_fig
+            print("")
+            playfield_print(play_data)
+            return play_data
+
+            #TODO Gewinnabfrage
+
+        line -= 1
+    print(f'Column {field} is full and cannot be selected')
+    field = player_move(actual_player)
+    play_data_update(field, play_data, actual_player, player_fig)
+
 
 
 
 def the_game(player):
-    """
-    add docstring
+    """add docstring
 
     Returns
     -------
@@ -83,61 +104,58 @@ def the_game(player):
     """
 
     play_data = [
-        [0, 0, 0, 0, 0, 0],   # row 7
-        [0, 0, 0, 0, 0, 0],   # row 6
-        [0, 0, 0, 0, 0, 0],   # row 5
-        [0, 0, 0, 0, 0, 0],   # row 4
-        [0, 0, 0, 0, 0, 0],   # row 3
-        [0, 0, 0, 0, 0, 0],   # row 2
-        [0, 0, 0, 0, 0, 0]    # bottom row
+        [0, 0, 1, 0, 0, 0],   # row 7
+        [0, 0, 1, 0, 0, 0],   # row 6
+        [0, 0, 1, 0, 0, 0],   # row 5
+        [0, 0, 1, 0, 0, 0],   # row 4
+        [0, 0, 1, 0, 0, 0],   # row 3
+        [0, 0, 2, 0, 0, 0],   # row 2
+        [0, 0, 1, 0, 0, 0]    # bottom row
     ]
     # 0 = empty
     # 1 = player1
     # 2 = player2 / AI
 
     if player == "2":
-        player1 = input(f'Player 1 please enter your name: ')
-        player2 = input(f'Player 2 please enter your name: ')
+        player1_name = input(f'Player 1 please enter your name: ')
+        player2_name = input(f'Player 2 please enter your name: ')
         print("")
     else:
-        player_solo = input(f'Please enter your name: ')
-        player_ai = "Computer"
+        player1_name = input(f'Please enter your name: ')
+        player2_name = "Computer"
+
+        #TODO AI difficulty -> speichern in variable + Übergabe an AI-Methode
+
         print("")
 
     playfield_print(play_data)
 
-    winner = False  #code keeps running until someone won, or draw
+    winner:bool = False  #code keeps running until someone won, or draw
     while not winner:
-        #todo player vs player
+        actual_player_name = player1_name
+        player_fig = 1
+        field = player_move(actual_player_name)
+        play_data = play_data_update(field, play_data, actual_player_name, player_fig)
+        #TODO player change
+        #TODO CREATE PLAY LOOP
 
-        #todo player vs ki
-        field = player_move()
-        print(field)
-        # todo store move + next player
-
-        # case1 = out of range bzw Eingabe Blödsinn
-        # if move >= 1 and move <= 7:
-        # case2 = Spalte voll
-        # case3 = frei
         exit()
 
-        #todo player change after move
-
-        pass
         #TODO create variable that stores information of winning player
         #TODO create variable to store infomation on ending screen
         #TODO open correct ending screen based on winner
+
         end_screen.winner(player) #TODO change player to winning player, not to imported player
         end_screen.loser()
         end_screen.draw()
 
 
 def startup():
-    """
-    add docstring
+    """Starts the game by asking if player wants to play vs AI, human opponent, or quit
 
     Returns
     -------
+    exit in case of "x"
 
     """
     startup_screen.titlescreen()
@@ -147,7 +165,7 @@ def startup():
     player_check = False
     if player == "1" or player == "2":
         player_check = True
-        the_game(player)  # Game starts here
+        the_game(player)  # actual game starts here
     elif player == "x":
         return print(f'EXIT')
     while player_check == False:
@@ -156,10 +174,10 @@ def startup():
             f'enter 2 to play against human opponent. Enter x to exit: ')
         if player == "1" or player == "2":
             player_check = True
-            the_game(player)  # Game starts here
+            the_game(player)  # actual game starts here
         elif player == "x":
             return print(f'EXIT')
-    # print(player)  used for checks
+
 
 
 
