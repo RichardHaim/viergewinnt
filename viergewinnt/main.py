@@ -1,6 +1,5 @@
 from rules import *
 from startup_screen import *
-from end_screen import *
 import os
 
 
@@ -185,6 +184,25 @@ class Endgame():
     '''
 
 
+    def non_draw(self, p_name):
+
+        print(f'''
+        ******************************************
+        CONGRATULATIONS!! PLAYER {p_name} has won!
+        ******************************************''')
+        exit()
+
+
+    def draw(self):
+
+        print(f'''
+        ******************************************
+        Oh no, there is no winner
+        ******************************************''')
+        exit()
+
+
+
 class Game():
 #TODO update comment section of this class
     ''' initializes the game
@@ -194,36 +212,51 @@ class Game():
     '''
     # sets the start of the round, player 1 will always start with token 1 = X, player 2 resumes with token 2 = O
 
-#TODO aktiv setzen
 
-    p = Players()
     pf = Playfield()
     pf.cleansreen()
     titlescreen()
     rules_set()
-    p1_name = p.startup(1)
-    p2_name = p.startup(2)
-    p_ID = 1
-    p_name_cur = p1_name
 
+
+
+    def ai_vs_human(self):
+        dec = input(f'To play against an human opponent press 1, to play against the computer press 2. To exit press q/Q >> ')
+        if dec == "q" or dec == "Q":
+            print("\nGood Bye!")
+            exit()
+        elif dec == "1":
+            self.gameloop()
+        else:
+            self.gameloop_ai()
+
+
+    def gameloop_ai(self):
+        pass
 
 
     def gameloop(self):
-        p_data = self.pf.playdata_init()
+        p = Players()
+        pf = Playfield()
+        p1_name = p.startup(1)
+        p2_name = p.startup(2)
+        p_ID = 1
+        p_name_cur = p1_name
+        p_data = pf.playdata_init()
         notfinished = True
         while notfinished:
-            self.pf.cleansreen()
-            self.pf.print_playfield(p_data)
-            selection = self.p.player_move(self.p_name_cur)
-            p_data = self.pf.play_data_update(selection, p_data, self.p_name_cur, self.p_ID)
-            self.p_name_cur = self.p.player_change(self.p_ID, self.p1_name, self.p2_name)
+            pf.cleansreen()
+            pf.print_playfield(p_data)
+            selection = p.player_move(p_name_cur)
+            p_data = pf.play_data_update(selection, p_data, p_name_cur, p_ID)
+            p_name_cur = p.player_change(p_ID, p1_name, p2_name)
 
 #TODO put here win-check
 
-            if self.p_ID == 1:
-                self.p_ID = 2
+            if p_ID == 1:
+                p_ID = 2
             else:
-                self.p_ID = 1
+                p_ID = 1
 
 # HIER ENDET DIE SCHLEIFE !
             #notfinished = not notfinished
@@ -236,6 +269,6 @@ if __name__ == '__main__':
     ''' starts the game
     '''
     g = Game()
-    g.gameloop()
+    g.ai_vs_human()
 
 
