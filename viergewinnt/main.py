@@ -1,187 +1,241 @@
-'''
-CHANGES:
-add play_data_update
-'''
-
-import startup_screen, end_screen, rules
+from rules import *
+from startup_screen import *
+from end_screen import *
+import os
 
 
-def playfield_print(play_data):
-    """prints the played moves onto the playfield
+class Playfield():
+    ''' initializes the playfield
+        prints the playfield
+        updates the played moves
+    '''
 
-    The play_data is stored in a format that is convenient to use for programming,
-    but does not look good when printing. This method adds all moves to the playfield,
-    so the moves can be printed in an easy to read format.
+    def playdata_init(self):
+        play_data = [
+            [0, 0, 0, 0, 0, 0],  # row 7
+            [0, 0, 0, 0, 0, 0],  # row 6
+            [0, 0, 0, 0, 0, 0],  # row 5
+            [0, 0, 0, 0, 0, 0],  # row 4
+            [0, 0, 0, 0, 0, 0],  # row 3
+            [0, 0, 0, 0, 0, 0],  # row 2
+            [0, 0, 0, 0, 0, 0]  # bottom row
+        ]
+        return play_data
 
-    Returns
-    -------
 
-    """
-    playfield = [
-        ["| ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " |"],
-        ["| ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " |"],
-        ["| ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " |"],
-        ["| ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " |"],
-        ["| ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " |"],
-        ["| ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " |"],
-        ["| ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " |"],
-        [" -", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "- "],
-        ["  ", "1", " ", "2", " ", "3", " ", "4", " ", "5", " ", "6", "  "]
-    ]
 
-    playfield_pos = 1
-    playfield_row = 0
+    def winner_check(self, p_data, p_name):
+#TODO write winner check
+# win = 4 in row; 4 in column, 4 diagonal
+# needs to return: name of winner + call endgame
 
-    for row in play_data:
-        for pos in row:
-            if pos == 1:
-                playfield[playfield_row][playfield_pos] = "X"
-            if pos == 2:
-                playfield[playfield_row][playfield_pos] = "O"
-            playfield_pos += 2
-        playfield_row += 1
+        pass
+
+
+
+    def play_data_update(self, selected_field, p_data, p_name, p_ID):
+        """Checks if selected column is free to select + places move
+
+        Returns
+        -------
+        p_data
+        p_move
+        """
+
+        # TODO 1) check, if selected column is free to select (max-row)
+        notfinished = True
+        while notfinished:
+            line = 6
+            while line >= 0:
+                if p_data[line][selected_field-1] == 0:
+                    p_data[line][selected_field-1] = p_ID
+                    return p_data
+                line -= 1
+            print(f'Column {selected_field} is full and cannot be selected')
+            selected_field = Players().player_move(p_name)
+
+
+
+    def print_playfield(self, p_data):
+
+        playfield = [
+            ["| ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " |"],
+            ["| ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " |"],
+            ["| ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " |"],
+            ["| ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " |"],
+            ["| ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " |"],
+            ["| ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " |"],
+            ["| ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " |"],
+            [" -", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "- "],
+            ["  ", "1", " ", "2", " ", "3", " ", "4", " ", "5", " ", "6", "  "]
+        ]
+
         playfield_pos = 1
+        playfield_row = 0
 
-    for row in playfield:
-        listToStr = ' '.join(map(str,row))
-        print(listToStr)
+        for row in p_data:
+            for pos in row:
+                if pos == 1:
+                    playfield[playfield_row][playfield_pos] = "X"
+                if pos == 2:
+                    playfield[playfield_row][playfield_pos] = "O"
+                playfield_pos += 2
+            playfield_row += 1
+            playfield_pos = 1
 
-    print("")
+        print("")
+        for row in playfield:
+            listToStr = ' '.join(map(str, row))
+            print(listToStr)
 
 
 
+    def cleansreen(self):
+        clear = lambda: os.system('clear')
+        clear()
 
-def player_move(actual_player):
-    #field = 0
-    try:
-        field = int(input(f'{actual_player}, please enter the column you want to place your move (1 - 6): '))
-        if field >= 1 and field <= 6:
-            return field
+
+
+class Players():
+#TODO update this comment below
+    ''' asks for number of players >> only with AI implemented, otherwise automatically 2 players
+        stores player names
+        allocates player ID (1 and 2) to player name
+        player moves
+    '''
+    def startup(self, p_ID):
+        '''Asks for player names (input)
+
+        Parameters
+        ----------
+        p_ID: number of player (1 or 2)
+
+        Returns
+        -------
+        p_name: name of the player that was added via input
+        '''
+        p_name = input(f'Player {p_ID} please enter your name: ')
+        return p_name
+
+
+
+    def player_change(self, p_ID, p1, p2):
+        '''changes the actual player
+
+        Parameters
+        ----------
+        p_ID: number of actual player; 1 = player1, 2 = player2
+
+        Returns
+        -------
+        p1 or p2, depending on who the actual player was
+        '''
+        if p_ID == 1:
+            return p2
         else:
-            print(f'Your input is not valid, please enter a number from 1 to 6')
-            player_move(actual_player)
-    except:
-        print(f'Your input is not valid')
-        player_move(actual_player)
+            return p1
+
+
+
+    def player_move(self, p_name):
+        '''gets input of desired move and validates, if input is correct.
+
+        Parameters
+        ----------
+        p_name: name of actual player
+
+        Returns
+        -------
+        field: the columns, the player places the token
+        '''
+        notfinished = True
+        while notfinished:
+
+            selected_field = input(f'\n{p_name}, enter the column you want to place your token or enter q/Q to quit >> ')
+            if selected_field == "Q" or selected_field == "q":
+                print("\nTHANK YOU FOR PLAYING")
+                exit()
+            try:
+                selected_field = int(selected_field)
+                if selected_field >= 1 and selected_field <= 6:
+                    return selected_field
+                else:
+                    print(f'No valid input')
+            except:
+                print(f'No valid input')
+
+
+
+            # try:
+            #     selected_field = int(input(f'{p_name}, please enter the column you want to place your move (1 - 6): '))
+            #     if selected_field >= 1 and selected_field <= 6:
+            #         return selected_field
+            #     else:
+            #         print(f'No valid input')
+            # except:
+            #     print(f'No valid input')
 
 
 
 
-def play_data_update(field, play_data, actual_player, player_fig):
-    """Checks if selected column is free to select + places move
 
-    Returns
-    -------
-    play_data
-    player_move
-    """
-
-    # TODO 1) check, if selected column is free to select (max-row)
-    line = 6
-    while line >= 0:
-        if play_data[line][field-1] == 0:
-            play_data[line][field-1] = player_fig
-            print("")
-            playfield_print(play_data)
-            return play_data
-
-            #TODO Gewinnabfrage
-
-        line -= 1
-    print(f'Column {field} is full and cannot be selected')
-    field = player_move(actual_player)
-    play_data_update(field, play_data, actual_player, player_fig)
+class Endgame():
+    ''' checks after every move if game is won
+        prints the screen for the winner
+    '''
 
 
+class Game():
+#TODO update comment section of this class
+    ''' initializes the game
+        gets playfield and players
+        asks for moves and checks if moves are valid + changes player (AI if implemented)
+        returns winner & asks for end/new start
+    '''
+    # sets the start of the round, player 1 will always start with token 1 = X, player 2 resumes with token 2 = O
+
+#TODO aktiv setzen
+
+    p = Players()
+    pf = Playfield()
+    pf.cleansreen()
+    titlescreen()
+    rules_set()
+    p1_name = p.startup(1)
+    p2_name = p.startup(2)
+    p_ID = 1
+    p_name_cur = p1_name
 
 
-def the_game(player):
-    """add docstring
 
-    Returns
-    -------
+    def gameloop(self):
+        p_data = self.pf.playdata_init()
+        notfinished = True
+        while notfinished:
+            self.pf.cleansreen()
+            self.pf.print_playfield(p_data)
+            selection = self.p.player_move(self.p_name_cur)
+            p_data = self.pf.play_data_update(selection, p_data, self.p_name_cur, self.p_ID)
+            self.p_name_cur = self.p.player_change(self.p_ID, self.p1_name, self.p2_name)
 
-    """
+#TODO put here win-check
 
-    play_data = [
-        [0, 0, 1, 0, 0, 0],   # row 7
-        [0, 0, 1, 0, 0, 0],   # row 6
-        [0, 0, 1, 0, 0, 0],   # row 5
-        [0, 0, 1, 0, 0, 0],   # row 4
-        [0, 0, 1, 0, 0, 0],   # row 3
-        [0, 0, 2, 0, 0, 0],   # row 2
-        [0, 0, 1, 0, 0, 0]    # bottom row
-    ]
-    # 0 = empty
-    # 1 = player1
-    # 2 = player2 / AI
+            if self.p_ID == 1:
+                self.p_ID = 2
+            else:
+                self.p_ID = 1
 
-    if player == "2":
-        player1_name = input(f'Player 1 please enter your name: ')
-        player2_name = input(f'Player 2 please enter your name: ')
-        print("")
-    else:
-        player1_name = input(f'Please enter your name: ')
-        player2_name = "Computer"
-
-        #TODO AI difficulty -> speichern in variable + Übergabe an AI-Methode
-
-        print("")
-
-    playfield_print(play_data)
-
-    winner:bool = False  #code keeps running until someone won, or draw
-    while not winner:
-        actual_player_name = player1_name
-        player_fig = 1
-        field = player_move(actual_player_name)
-        play_data = play_data_update(field, play_data, actual_player_name, player_fig)
-        #TODO player change
-        #TODO CREATE PLAY LOOP
-
-        exit()
-
-        #TODO create variable that stores information of winning player
-        #TODO create variable to store infomation on ending screen
-        #TODO open correct ending screen based on winner
-
-        end_screen.winner(player) #TODO change player to winning player, not to imported player
-        end_screen.loser()
-        end_screen.draw()
-
-
-def startup():
-    """Starts the game by asking if player wants to play vs AI, human opponent, or quit
-
-    Returns
-    -------
-    exit in case of "x"
-
-    """
-    startup_screen.titlescreen()
-    rules.rules_set()
-
-    player = input(f'Enter 1 to play against your computer, enter 2 to play against human opponent. Enter x to exit: ')
-    player_check = False
-    if player == "1" or player == "2":
-        player_check = True
-        the_game(player)  # actual game starts here
-    elif player == "x":
-        return print(f'EXIT')
-    while player_check == False:
-        player = input(
-            f'{player} is incorrect, please enter 1 to play against your computer,'
-            f'enter 2 to play against human opponent. Enter x to exit: ')
-        if player == "1" or player == "2":
-            player_check = True
-            the_game(player)  # actual game starts here
-        elif player == "x":
-            return print(f'EXIT')
-
+# HIER ENDET DIE SCHLEIFE !
+            #notfinished = not notfinished
 
 
 
 
 
 if __name__ == '__main__':
-    startup()
+    ''' starts the game
+    '''
+    g = Game()
+    g.gameloop()
+
+
