@@ -16,9 +16,9 @@ class Playfield():
             [0, 0, 0, 0, 0, 0],  # row 6
             [0, 0, 0, 0, 0, 0],  # row 5
             [0, 0, 0, 0, 0, 0],  # row 4
-            [0, 0, 0, 0, 0, 0],  # row 3
-            [0, 0, 0, 0, 0, 0],  # row 2
-            [0, 0, 0, 0, 0, 0]  # bottom row
+            [0, 0, 0, 0, 1, 2],  # row 3
+            [0, 0, 0, 1, 2, 2],  # row 2
+            [0, 0, 1, 2, 2, 2]  # bottom row
         ]
         return play_data
 
@@ -63,8 +63,8 @@ class Playfield():
                      and p_data[row+2][col+2] == p_ID and p_data[row+3][col+3] == p_ID):
                         eg.winselector(p_ID, p_name)
                     col += 1
-                if (p_data[row][col] == p_ID and p_data[row - 1][col - 1] == p_ID
-                        and p_data[row - 2][col - 2] == p_ID and p_data[row - 3][col - 3] == p_ID):
+                if (p_data[row][col] == p_ID and p_data[row + 1][col - 1] == p_ID
+                        and p_data[row + 2][col - 2] == p_ID and p_data[row + 3][col - 3] == p_ID):
                     eg.winselector(p_ID, p_name)
                 col += 1
             row += 1
@@ -308,21 +308,21 @@ class Endgame():
 
 
     def human_win(self, p_name):
-        print(f'\n******************************************\n\
-        CONGRATULATIONS {p_name}, you won!\n\
-        ******************************************\n')
+        print("******************************************\n"
+        "CONGRATULATIONS", p_name, ", you won!\n"
+        "******************************************\n")
         self.newgame()
 
     def ai_win(self, p_name):
-        print(f'******************************************\n\
-        I am sorry {p_name}, the computer won.\n\
-        ******************************************\n')
+        print("******************************************\n"
+        "I am sorry", p_name, ", the computer won.\n"
+        "******************************************\n")
         self.newgame()
 
     def draw(self):
-        print(f'******************************************\n\
-        Oh no, there is no winner\n\
-        ******************************************\n')
+        print("******************************************\n"
+        "Oh no, there is no winner...\n"
+        "******************************************\n")
         self.newgame()
 
 
