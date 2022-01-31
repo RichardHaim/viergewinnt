@@ -36,8 +36,8 @@ class Playfield():
         while row <= 6:
             col = 0
             while col <= 2:
-                if (p_data[row][col] == p_ID and p_data[row][col+1] == p_ID and
-                p_data[row][col+2] == p_ID and p_data[row][col+3] == p_ID):
+                if (p_data[row][col] == p_ID and p_data[row][col + 1] == p_ID and
+                p_data[row][col + 2] == p_ID and p_data[row][col + 3] == p_ID):
                     eg.winselector(p_ID, p_name)
                 col += 1
             row +=1
@@ -47,8 +47,8 @@ class Playfield():
         while col <= 5:
             row = 0
             while row <= 3:
-                if (p_data[row][col] == p_ID and p_data[row+1][col] == p_ID and
-                p_data[row+2][col] == p_ID and p_data[row]+3[col] == p_ID):
+                if (p_data[row][col] == p_ID and p_data[row + 1][col] == p_ID and
+                p_data[row + 2][col] == p_ID and p_data[row + 3][col] == p_ID):
                     eg.winselector(p_ID, p_name)
                 row += 1
             col += 1
@@ -62,8 +62,8 @@ class Playfield():
             col = 0
             while col <= 5:
                 while col <= 2:
-                    if (p_data[row][col] == p_ID and p_data[row+1][col+1] == p_ID
-                     and p_data[row+2][col+2] == p_ID and p_data[row+3][col+3] == p_ID):
+                    if (p_data[row][col] == p_ID and p_data[row + 1][col + 1] == p_ID
+                     and p_data[row + 2][col + 2] == p_ID and p_data[row + 3][col + 3] == p_ID):
                         eg.winselector(p_ID, p_name)
                     col += 1
                 if (p_data[row][col] == p_ID and p_data[row + 1][col - 1] == p_ID
