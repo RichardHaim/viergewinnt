@@ -1,7 +1,7 @@
 from rules import *
 from startup_screen import *
 import random
-import os
+from os import system, name
 
 
 class Playfield():
@@ -18,7 +18,7 @@ class Playfield():
             [0, 0, 0, 0, 0, 0],  # row 4
             [0, 0, 0, 0, 1, 2],  # row 3
             [0, 0, 0, 1, 2, 2],  # row 2
-            [0, 0, 1, 2, 2, 2]  # bottom row
+            [0, 0, 2, 2, 1, 2]  # bottom row
         ]
         return play_data
 
@@ -26,27 +26,30 @@ class Playfield():
 
 
     def winner_check(self, p_data, p_name, p_ID):
+        '''checks after every move if game is won/draw
+        '''
+
         eg = Endgame()
 
         # check 4 in row
-        for row in p_data:
-            in_a_row = 0
-            for col in row:
-                if col == p_ID:
-                    in_a_row +=1
-                    if in_a_row == 4:
-                        eg.winselector(p_ID, p_name)
+        row = 0
+        while row <= 6:
+            col = 0
+            while col <= 2:
+                if (p_data[row][col] == p_ID and p_data[row][col+1] == p_ID and
+                p_data[row][col+2] == p_ID and p_data[row][col+3] == p_ID):
+                    eg.winselector(p_ID, p_name)
+                col += 1
+            row +=1
 
         # check 4 in column
         col = 0
         while col <= 5:
-            in_a_row = 0
             row = 0
-            while row <= 6:
-                if p_data[row][col] == p_ID:
-                    in_a_row += 1
-                    if in_a_row == 4:
-                        eg.winselector(p_ID, p_name)
+            while row <= 3:
+                if (p_data[row][col] == p_ID and p_data[row+1][col] == p_ID and
+                p_data[row+2][col] == p_ID and p_data[row]+3[col] == p_ID):
+                    eg.winselector(p_ID, p_name)
                 row += 1
             col += 1
 
@@ -129,8 +132,11 @@ class Playfield():
 
 
     def cleansreen(self):
-        clear = lambda: os.system('clear')
-        clear()
+        '''clears the playing field'''
+        if name == "nt":
+            _ = system('cls')
+        else:
+            _ = system('clear')
 
 
 
@@ -212,12 +218,6 @@ class Players():
             #         print(f'No valid input')
             # except:
             #     print(f'No valid input')
-
-
-
-
-
-
 
 
 
