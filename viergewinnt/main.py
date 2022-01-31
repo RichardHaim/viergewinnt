@@ -16,9 +16,9 @@ class Playfield():
             [0, 0, 0, 0, 0, 0],  # row 6
             [0, 0, 0, 0, 0, 0],  # row 5
             [0, 0, 0, 0, 0, 0],  # row 4
-            [1, 1, 0, 0, 0, 0],  # row 3
-            [1, 2, 1, 0, 0, 0],  # row 2
-            [2, 2, 2, 1, 0, 0]  # bottom row
+            [0, 0, 0, 0, 0, 0],  # row 3
+            [0, 0, 0, 0, 0, 0],  # row 2
+            [0, 0, 0, 0, 0, 0]  # bottom row
         ]
         return play_data
 
@@ -37,7 +37,6 @@ class Playfield():
                     if in_a_row == 4:
                         eg.winselector(p_ID, p_name)
 
-
         # check 4 in column
         col = 0
         while col <= 5:
@@ -51,37 +50,26 @@ class Playfield():
                 row += 1
             col += 1
 
-        # TODO 4 diagonal bugfix
-        # check 4 in diagonal links oben nach rechts unten
-        # start links oben, solange bis spalte 3 (index 2) erreicht und nur bis zeile 4 (index 3)
-        # col: start 0, end <= 2
-        # row: start 0, end <= 3
-        # S
-        #   x
-        #     x
-        #       x
-        col = 0
-        while col <= 2:
-            in_a_row = 0
-            row = 0
-            i = 0
-            while row <= 3:
-                if p_data[row][col + i] == p_ID:
-                    in_a_row += 1
-                    if in_a_row == 4:
+        # check 4 diagonal
+        # starts at 0/0 and checks diagonal left top to right bottom until column index 2
+        # resumes at 3/0 and checks diagonal right top to left bottom until column index 5
+        # jumps into next row if no winner found
+        row = 0
+        while row <= 3:
+            col = 0
+            while col <= 5:
+                while col <= 2:
+                    if (p_data[row][col] == p_ID and p_data[row+1][col+1] == p_ID
+                     and p_data[row+2][col+2] == p_ID and p_data[row+3][col+3] == p_ID):
                         eg.winselector(p_ID, p_name)
-                row += 1
-                i += 1
-            col += 1
+                    col += 1
+                if (p_data[row][col] == p_ID and p_data[row - 1][col - 1] == p_ID
+                        and p_data[row - 2][col - 2] == p_ID and p_data[row - 3][col - 3] == p_ID):
+                    eg.winselector(p_ID, p_name)
+                col += 1
+            row += 1
 
-        # TODO 4 diagonal implement
-        # check 4 in diagonal rechts oben nach links unten
-        # col: start 0, end <= 2
-        # row: start 6, end <= 4
-        #       x
-        #     x
-        #   x
-        # S
+
 
 
     def play_data_update(self, selected_field, p_data, p_name, p_ID):
@@ -229,47 +217,7 @@ class Players():
 
 
 
-class Endgame():
-    ''' checks after every move if game is won
-        prints the screen for the winner
-    '''
 
-
-    def winselector(self, p_ID, p_name):
-        if p_ID < 3:
-            self.human_win(p_name)
-        elif p_ID == 3:
-            self.ai_win(p_name)
-        else:
-            self.draw()
-
-
-
-    def human_win(self, p_name):
-
-        print(f'''
-        ******************************************
-        CONGRATULATIONS!! PLAYER {p_name} did win!
-        ******************************************''')
-        exit()
-
-
-    def ai_win(self, p_name):
-
-        print(f'''
-        ******************************************
-        I am sorry {p_name}, the computer did win.
-        ******************************************''')
-        exit()
-
-
-    def draw(self):
-
-        print(f'''
-        ******************************************
-        Oh no, there is no winner
-        ******************************************''')
-        exit()
 
 
 
@@ -335,6 +283,47 @@ class Game():
 
 
 
+class Endgame():
+    ''' checks after every move if game is won
+        prints the screen for the winner
+    '''
+    def winselector(self, p_ID, p_name):
+        if p_ID < 3:
+            self.human_win(p_name)
+        elif p_ID == 3:
+            self.ai_win(p_name)
+        else:
+            self.draw()
+
+
+    def newgame(self):
+        g = Game()
+        newgame = input(f'If you want to play another round enter y/Y, all other commands will quit >> ')
+        if newgame == "y" or newgame == "Y":
+            g.ai_vs_human()
+        else:
+            print(f'Thank you for playing!')
+            exit()
+
+
+
+    def human_win(self, p_name):
+        print(f'\n******************************************\n\
+        CONGRATULATIONS {p_name}, you won!\n\
+        ******************************************\n')
+        self.newgame()
+
+    def ai_win(self, p_name):
+        print(f'******************************************\n\
+        I am sorry {p_name}, the computer won.\n\
+        ******************************************\n')
+        self.newgame()
+
+    def draw(self):
+        print(f'******************************************\n\
+        Oh no, there is no winner\n\
+        ******************************************\n')
+        self.newgame()
 
 
 
