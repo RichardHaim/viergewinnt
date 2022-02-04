@@ -8,7 +8,6 @@ The story behind the game can be looked up here.(https://en.wikipedia.org/wiki/C
 
 ### ***How to start our game:***
 
-1. first 
-2. second 
-3. third 
-4. ... 
+1. Download the File from GitHub 
+2. Open the "main.py" file with python
+3. Click "run file" in your environment and the game will appear in the console. From there, further explanations will be shown.
