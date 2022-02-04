@@ -1,2 +1,2 @@
 # AI
-Description of AI
+The AI works in a very basic style. Each move, a random number from 0 to 5 is created, which will be stored as "computer selected field" and send to validation. If the move is valid, the playfield data will be udpated accordingly, otherwise a new random number will be generated.
