@@ -8,9 +8,18 @@ class Playfield():
     ''' initializes the playfield
         prints the playfield
         updates the played moves
+        reviews if the game is won/draw
+        cleans the screen after after each move
     '''
 
     def playdata_init(self):
+        ''' initializes the playfield data
+        The playfield data is stored in a list containing 0 (empty), 1 (player 1), 2 (player 2), 3 (AI)
+
+        Returns
+        -------
+        play_data: the updated playfield data
+        '''
         play_data = [
             [0, 0, 0, 0, 0, 0],  # row 7
             [0, 0, 0, 0, 0, 0],  # row 6
@@ -26,7 +35,18 @@ class Playfield():
 
 
     def winner_check(self, p_data, p_name, p_ID):
-        '''checks after every move if game is won/draw
+        ''' checks after every move if game is won/draw and calls winselector if true
+
+        Parameters
+        ----------
+        p_data: the playfield data
+        p_name: name of current playner
+        p_ID: ID of current player: 1 (player 1), 2 (player 2), 3 (AI)
+
+        Returns
+        -------
+        nothing
+
         '''
 
         eg = Endgame()
@@ -72,6 +92,7 @@ class Playfield():
                 col += 1
             row += 1
 
+        # check draw
         col = 0
         non_zero_counter = 0
         while col <= 5:
@@ -89,8 +110,7 @@ class Playfield():
 
         Returns
         -------
-        p_data
-        p_move
+        p_data: playfield data updated with player token
         """
 
         notfinished = True
@@ -108,7 +128,18 @@ class Playfield():
 
 
     def print_playfield(self, p_data):
+        '''Prints the playfield
+        This method is purely for optical reasons to print the playfield in an easy to read way
 
+        Parameters
+        ----------
+        p_data: playfield data
+
+        Returns
+        -------
+        printout of the playfield
+
+        '''
         playfield = [
             ["| ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " |"],
             ["| ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " |"],
@@ -142,7 +173,12 @@ class Playfield():
 
 
     def cleansreen(self):
-        '''clears the playing field'''
+        '''clears the playing field after every move
+
+        Returns
+        -------
+        noting
+        '''
         if name == "nt":
             _ = system('cls')
         else:
@@ -151,11 +187,9 @@ class Playfield():
 
 
 class Players():
-#TODO update this comment below
-    ''' asks for number of players >> only with AI implemented, otherwise automatically 2 players
-        stores player names
-        allocates player ID (1 and 2) to player name
-        player moves
+    ''' stores player names
+        allocates player ID to player name
+        verifies player moves
     '''
     def startup(self, p_ID):
         '''Asks for player names (input)
@@ -192,7 +226,7 @@ class Players():
 
 
     def player_move(self, p_name):
-        '''gets input of desired move and validates, if input is correct.
+        '''gets input of desired move and validates, if input is correct
 
         Parameters
         ----------
@@ -200,11 +234,10 @@ class Players():
 
         Returns
         -------
-        field: the columns, the player places the token
+        field: the column in which the player wants to place the token
         '''
         notfinished = True
         while notfinished:
-
             selected_field = input(f'\n{p_name}, enter the column you want to place your token or enter q/Q to quit >> ')
             if selected_field == "Q" or selected_field == "q":
                 print("\nTHANK YOU FOR PLAYING")
@@ -220,36 +253,22 @@ class Players():
 
 
 
-            # try:
-            #     selected_field = int(input(f'{p_name}, please enter the column you want to place your move (1 - 6): '))
-            #     if selected_field >= 1 and selected_field <= 6:
-            #         return selected_field
-            #     else:
-            #         print(f'No valid input')
-            # except:
-            #     print(f'No valid input')
-
-
-
-
 class Game():
-#TODO update comment section of this class
-    ''' initializes the game
-        gets playfield and players
-        asks for moves and checks if moves are valid + changes player (AI if implemented)
-        returns winner & asks for end/new start
+    ''' runs the game
     '''
-    # sets the start of the round, player 1 will always start with token 1 = X, player 2 resumes with token 2 = O
-
-
     pf = Playfield()
     pf.cleansreen()
     titlescreen()
     rules_set()
 
 
-
     def ai_vs_human(self):
+        '''asks if player wants to play pvp or pvc
+
+        Returns
+        -------
+        dec: as parameter for the gameloop; holds information if opponent is AI or human
+        '''
         dec = input(f'To play against an human opponent press 1, to play against the computer press 2. To exit press q/Q >> ')
         if dec == "q" or dec == "Q":
             print("\nGood Bye!")
@@ -262,6 +281,16 @@ class Game():
 
 
     def gameloop(self, fiend):
+        ''' the actual game
+
+        Parameters
+        ----------
+        fiend: contains information, if pvp (1) or pvc (2)
+
+        Returns
+        -------
+        nothing
+        '''
         p = Players()
         pf = Playfield()
         p1_name = p.startup(1)
@@ -301,6 +330,17 @@ class Endgame():
         prints the screen for the winner
     '''
     def winselector(self, p_ID, p_name):
+        '''selects the correct ending screen
+
+        Parameters
+        ----------
+        p_ID: ID of actual player
+        p_name: name of actual player
+
+        Returns
+        -------
+        nothing
+        '''
         if p_ID < 3:
             self.human_win(p_name)
         elif p_ID == 3:
@@ -310,6 +350,12 @@ class Endgame():
 
 
     def newgame(self):
+        '''asks player whether a new game shall be played or not
+
+        Returns
+        -------
+        nothing
+        '''
         g = Game()
         newgame = input(f'If you want to play another round enter y/Y, all other commands will quit >> ')
         if newgame == "y" or newgame == "Y":
@@ -321,18 +367,43 @@ class Endgame():
 
 
     def human_win(self, p_name):
+        '''ending screen when human player won
+        Parameters
+        ----------
+        p_name: name of actual player
+
+        Returns
+        -------
+        nothing
+        '''
         print("******************************************\n"
         "CONGRATULATIONS", p_name, ", you won!\n"
         "******************************************\n")
         self.newgame()
 
     def ai_win(self, p_name):
+        '''ending screen when ai won
+
+        Parameters
+        ----------
+        p_name: name of ai
+
+        Returns
+        -------
+        nothing
+        '''
         print("******************************************\n"
         "I am sorry loser", p_name, "won.\n"
         "******************************************\n")
         self.newgame()
 
     def draw(self):
+        '''ending screen when draw (no winner)
+
+        Returns
+        -------
+        nothing
+        '''
         print("******************************************\n"
         "Oh no, there is no winner...\n"
         "******************************************\n")
@@ -341,7 +412,7 @@ class Endgame():
 
 
 if __name__ == '__main__':
-    ''' starts the game
+    ''' runs the game
     '''
     g = Game()
     g.ai_vs_human()
