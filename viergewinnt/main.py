@@ -72,6 +72,15 @@ class Playfield():
                 col += 1
             row += 1
 
+        col = 0
+        non_zero_counter = 0
+        while col <= 5:
+            if p_data[0][col] != 0:
+                non_zero_counter += 1
+            col += 1
+        if non_zero_counter == 6:
+            p_ID = 99
+            eg.winselector(p_ID, p_name)
 
 
 
@@ -92,7 +101,8 @@ class Playfield():
                     p_data[line][selected_field-1] = p_ID
                     return p_data
                 line -= 1
-            print(f'Column {selected_field} is full and cannot be selected')
+            if p_ID != 3:
+                print(f'Column {selected_field} is full and cannot be selected')
             selected_field = Players().player_move(p_name)
 
 
@@ -244,23 +254,21 @@ class Game():
         if dec == "q" or dec == "Q":
             print("\nGood Bye!")
             exit()
-        elif dec == "1":
-            self.gameloop()
+        elif dec == "1" or dec == "2":
+            self.gameloop(dec)
         else:
-            self.gameloop_ai()
+            self.ai_vs_human()
 
 
-    def gameloop_ai(self):
-        # p_ID for AI = 3
-        # p_ID for human = 1
-        pass
 
-
-    def gameloop(self):
+    def gameloop(self, fiend):
         p = Players()
         pf = Playfield()
         p1_name = p.startup(1)
-        p2_name = p.startup(2)
+        if fiend == "1":
+            p2_name = p.startup(2)
+        else:
+            p2_name = "Herbert Tryhard"
         p_ID = 1
         p_name_cur = p1_name
         p_data = pf.playdata_init()
@@ -268,15 +276,20 @@ class Game():
 
         notfinished = True
         while notfinished:
-            selection = p.player_move(p_name_cur)
+            if p_ID == 3:
+                selection = random.randint(0, 5)
+            else:
+                selection = p.player_move(p_name_cur)
             p_data = pf.play_data_update(selection, p_data, p_name_cur, p_ID)
             pf.cleansreen()
             pf.print_playfield(p_data)
             pf.winner_check(p_data, p_name_cur, p_ID)
 
             p_name_cur = p.player_change(p_ID, p1_name, p2_name)
-            if p_ID == 1:
+            if p_ID == 1 and fiend == "1": #fiend == human
                 p_ID = 2
+            elif p_ID == 1 and fiend == "2": #fiend == AI
+                p_ID = 3
             else:
                 p_ID = 1
 
@@ -315,7 +328,7 @@ class Endgame():
 
     def ai_win(self, p_name):
         print("******************************************\n"
-        "I am sorry", p_name, ", the computer won.\n"
+        "I am sorry loser", p_name, "won.\n"
         "******************************************\n")
         self.newgame()
 
