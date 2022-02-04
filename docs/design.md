@@ -7,8 +7,10 @@ Description of implementation
 - For getting the rules of the game, we created "ruleset" which shows, by every start of the game the rules of the game.
 ## Game itself
 -  to set up a move for the game, we added a input for "player_moves" + an validation checks, which checks if the moves are valid or not. (e.g. you cannot place a playerblock on a field which is already taken
--  We decided to save the moves in a list with 0, 1, 2 (empty, player 1 and player 2/AI) because it was easier for us to handle if it was a hit or no hit. 
+-  We decided to save the moves in a list with 0, 1, 2 and 3 (empty=0, player 1=1, player 2=2 and 3 = AI) because it was easier for us to handle if it was a hit or no hit. 
 -  We decided to create a list called "playfield_init" that is purely used for printing the "play_data" in convenient format, the information of play_data is routed through for loop to correctly populate playfield with "X", "O" and empty.
 - "play_data" checks, which fields are already set up and which are not and we implemented it to "the_game" where we moved additional code for the main game, also not to litter our main file and brings more structure to the code itself.
+- Our computer opponent, called "Herbert Tryhard", is a simple KI which places it moves by creating a random number which runs through validation check and then places the move.
 ## After the game
--  After checking who won the game we needed a end screen. For winner, loser and draw screen, we wanted to make a single screen for these in a additional file because we didn't want to litter our main file. One screen if a player wins, one if the AI wins and another one if its a draw. After the screen, the player has the opportunity to start a new game or exit. We solved that with impleneting the main file.
+-  After checking who won the game we needed an end screen. One screen if a player wins, one if the AI wins and another one if its a draw. After the screen, the player has the opportunity to start a new game by pressing "Y", any other key will exit the game. 
+-  If noone won the game, its a draw. The function checks every row if theres no "zero". If it's a draw, another end screen will be shown.
