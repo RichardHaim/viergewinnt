@@ -1,5 +1,3 @@
-from rules import *
-from startup_screen import *
 import random
 from os import system, name
 
@@ -259,8 +257,37 @@ class Game():
     '''
     pf = Playfield()
     pf.cleansreen()
-    titlescreen()
-    rules_set()
+
+
+    def titlescreen(self):
+        """prints titlescreen
+
+        Returns
+        -------
+        nothing
+        """
+        print ('''
+***********************************
+XOXO        4 gewinnt          XOXO
+***********************************
+    ''')
+
+
+    def rules_set(self):
+        '''print rules of the game
+
+        Returns
+        -------
+        nothing
+        '''
+
+        print ('''
+RULES OF THE GAME:
+The game is played on a vertical board which has seven columns and six rows. 
+The aim for both players is to make a straight line of four OWN pieces (in our version of the game the pieces will be
+"X" and "O"). The Line can be vertical, horizontal or diagonal. Moves are made alternatively, one by turn.
+If none reaches to put 4 pieces in a line, its a draw. 
+        ''')
 
 
     def ai_vs_human(self):
@@ -416,6 +443,8 @@ if __name__ == '__main__':
     ''' runs the game
     '''
     g = Game()
+    g.titlescreen()
+    g.rules_set()
     g.ai_vs_human()
 
 
