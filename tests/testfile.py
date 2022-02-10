@@ -1,7 +1,5 @@
 import unittest
 import viergewinnt.main
-#import viergewinnt.rules
-#import viergewinnt.startup_screen
 vgP = viergewinnt.main.Playfield()
 
 class Testcase(unittest.TestCase):
