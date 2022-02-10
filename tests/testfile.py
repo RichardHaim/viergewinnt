@@ -4,7 +4,7 @@ vgP = viergewinnt.main.Playfield()
 
 class Testcase(unittest.TestCase):
     def setUp(self):
-        self.inputcheck1 = "1" #valid input
+        self.inputcheck1 = 1 #valid input
         self.inputcheck1_out = [[0, 0, 0, 0, 0, 0],  # row 7
             [0, 0, 0, 0, 0, 0],  # row 6
             [0, 0, 0, 0, 0, 0],  # row 5
@@ -13,7 +13,7 @@ class Testcase(unittest.TestCase):
             [0, 0, 0, 0, 0, 0],  # row 2
             [1, 0, 0, 0, 0, 0]  # bottom row
         ]
-        self.inputcheck2 = "2" #valid input
+        self.inputcheck2 = 2 #valid input
         self.inputcheck2_out = [
             [0, 0, 0, 0, 0, 0],  # row 7
             [0, 0, 0, 0, 0, 0],  # row 6
@@ -23,7 +23,7 @@ class Testcase(unittest.TestCase):
             [0, 0, 0, 0, 0, 0],  # row 2
             [0, 1, 0, 0, 0, 0]  # bottom row
         ]
-        self.inputcheck3 = "3" #valid input
+        self.inputcheck3 = 3 #valid input
         self.inputcheck3_out = [
             [0, 0, 0, 0, 0, 0],  # row 7
             [0, 0, 0, 0, 0, 0],  # row 6
@@ -33,7 +33,7 @@ class Testcase(unittest.TestCase):
             [0, 0, 0, 0, 0, 0],  # row 2
             [0, 0, 1, 0, 0, 0]  # bottom row
         ]
-        self.inputcheck4 = "4" #valid input
+        self.inputcheck4 = 4 #valid input
         self.inputcheck4_out = [
             [0, 0, 0, 0, 0, 0],  # row 7
             [0, 0, 0, 0, 0, 0],  # row 6
@@ -43,7 +43,7 @@ class Testcase(unittest.TestCase):
             [0, 0, 0, 0, 0, 0],  # row 2
             [0, 0, 0, 1, 0, 0]  # bottom row
         ]
-        self.inputcheck5 = "5" #valid input
+        self.inputcheck5 = 5 #valid input
         self.inputcheck5_out = [
             [0, 0, 0, 0, 0, 0],  # row 7
             [0, 0, 0, 0, 0, 0],  # row 6
@@ -53,7 +53,7 @@ class Testcase(unittest.TestCase):
             [0, 0, 0, 0, 0, 0],  # row 2
             [0, 0, 0, 0, 1, 0]  # bottom row
         ]
-        self.inputcheck6 = "6" #valid input
+        self.inputcheck6 = 6 #valid input
         self.inputcheck6_out = [
             [0, 0, 0, 0, 0, 0],  # row 7
             [0, 0, 0, 0, 0, 0],  # row 6
@@ -116,7 +116,7 @@ class Testcase(unittest.TestCase):
             [0, 1, 2, 2, 0, 0],  # row 2
             [1, 2, 2, 2, 0, 0]  # bottom row
         ]
-        self.winner_dia_r_to_l2 = [ #winner == true
+        self.winner_dia_r_to_l2 = [ # winner == true
             [0, 0, 0, 0, 0, 0],  # row 7
             [0, 0, 0, 0, 0, 0],  # row 6
             [0, 0, 0, 0, 0, 1],  # row 5
