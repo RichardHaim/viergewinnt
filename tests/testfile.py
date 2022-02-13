@@ -1,12 +1,13 @@
 import unittest
-import viergewinnt.main as vg
-vgP = vg.Playfield()
-vgPs = vg.Players()
+from viergewinnt.main import *
+vgP = Playfield()
+vgPs = Players()
 
 class Testcase(unittest.TestCase):
     def setUp(self):
         self.inputcheck1 = 1 #valid input
-        self.inputcheck1_out = [[0, 0, 0, 0, 0, 0],  # row 7
+        self.inputcheck1_out = [
+            [0, 0, 0, 0, 0, 0],  # row 7
             [0, 0, 0, 0, 0, 0],  # row 6
             [0, 0, 0, 0, 0, 0],  # row 5
             [0, 0, 0, 0, 0, 0],  # row 4
