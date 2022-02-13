@@ -5,6 +5,15 @@ vgPs = Players()
 
 class Testcase(unittest.TestCase):
     def setUp(self):
+        self.play_data_empty = [
+            [0, 0, 0, 0, 0, 0],  # row 7
+            [0, 0, 0, 0, 0, 0],  # row 6
+            [0, 0, 0, 0, 0, 0],  # row 5
+            [0, 0, 0, 0, 0, 0],  # row 4
+            [0, 0, 0, 0, 0, 0],  # row 3
+            [0, 0, 0, 0, 0, 0],  # row 2
+            [0, 0, 0, 0, 0, 0]  # bottom row
+        ]
         self.inputcheck1 = 1 #valid input
         self.inputcheck1_out = [
             [0, 0, 0, 0, 0, 0],  # row 7
@@ -175,15 +184,33 @@ class Testcase(unittest.TestCase):
         self.playermove_incorrect4 = "0"
 
 
-    def testinput(self):
-        # test if field input is put into correct playce in play_data
-        self.assertEqual(self.inputcheck1_out, vgP.play_data_update(self.inputcheck1, vgP.playdata_init(), "player", 1))
-        self.assertEqual(self.inputcheck2_out, vgP.play_data_update(self.inputcheck2, vgP.playdata_init(), "player", 1))
-        self.assertEqual(self.inputcheck3_out, vgP.play_data_update(self.inputcheck3, vgP.playdata_init(), "player", 1))
-        self.assertEqual(self.inputcheck4_out, vgP.play_data_update(self.inputcheck4, vgP.playdata_init(), "player", 1))
-        self.assertEqual(self.inputcheck5_out, vgP.play_data_update(self.inputcheck5, vgP.playdata_init(), "player", 1))
-        self.assertEqual(self.inputcheck6_out, vgP.play_data_update(self.inputcheck6, vgP.playdata_init(), "player", 1))
+    def empty_playdata(self):
+        self.play_data_empty = [
+            [0, 0, 0, 0, 0, 0],  # row 7
+            [0, 0, 0, 0, 0, 0],  # row 6
+            [0, 0, 0, 0, 0, 0],  # row 5
+            [0, 0, 0, 0, 0, 0],  # row 4
+            [0, 0, 0, 0, 0, 0],  # row 3
+            [0, 0, 0, 0, 0, 0],  # row 2
+            [0, 0, 0, 0, 0, 0]  # bottom row
+        ]
 
+    def test_inputplacement(self):
+        # test if field input is put into correct playce in play_data
+        self.assertEqual(self.inputcheck1_out, vgP.play_data_update(self.inputcheck1, self.play_data_empty, "player", 1))
+        self.empty_playdata()
+        self.assertEqual(self.inputcheck2_out, vgP.play_data_update(self.inputcheck2, self.play_data_empty, "player", 1))
+        self.empty_playdata()
+        self.assertEqual(self.inputcheck3_out, vgP.play_data_update(self.inputcheck3, self.play_data_empty, "player", 1))
+        self.empty_playdata()
+        self.assertEqual(self.inputcheck4_out, vgP.play_data_update(self.inputcheck4, self.play_data_empty, "player", 1))
+        self.empty_playdata()
+        self.assertEqual(self.inputcheck5_out, vgP.play_data_update(self.inputcheck5, self.play_data_empty, "player", 1))
+        self.empty_playdata()
+        self.assertEqual(self.inputcheck6_out, vgP.play_data_update(self.inputcheck6, self.play_data_empty, "player", 1))
+        self.empty_playdata()
+
+    def test_movementvalidation(self):
         # test if player input is detected as correct/incorrect
         self.assertTrue(vgPs.player_move_validation(self.playermove_correct1))
         self.assertTrue(vgPs.player_move_validation(self.playermove_correct2))
@@ -196,6 +223,7 @@ class Testcase(unittest.TestCase):
         self.assertFalse(vgPs.player_move_validation(self.playermove_incorrect3))
         self.assertFalse(vgPs.player_move_validation(self.playermove_incorrect4))
 
+    def test_columnempty(self):
         # test if code detects that selected column is not full
         self.assertTrue(vgP.play_data_validation(self.is_not_full_line,self.isfullcheck1,self.is_not_full))
         self.assertTrue(vgP.play_data_validation(self.is_not_full_line, self.isfullcheck2, self.is_not_full))
@@ -204,6 +232,7 @@ class Testcase(unittest.TestCase):
         self.assertTrue(vgP.play_data_validation(self.is_not_full_line, self.isfullcheck5, self.is_not_full))
         self.assertTrue(vgP.play_data_validation(self.is_not_full_line, self.isfullcheck6, self.is_not_full))
 
+    def test_columnfull(self):
         # test if code detects that selected column is full
         self.assertFalse(vgP.play_data_validation(self.is_not_full_line, self.isfullcheck1, self.winner_draw_isfull))
         self.assertFalse(vgP.play_data_validation(self.is_not_full_line, self.isfullcheck2, self.winner_draw_isfull))
@@ -212,6 +241,7 @@ class Testcase(unittest.TestCase):
         self.assertFalse(vgP.play_data_validation(self.is_not_full_line, self.isfullcheck5, self.winner_draw_isfull))
         self.assertFalse(vgP.play_data_validation(self.is_not_full_line, self.isfullcheck6, self.winner_draw_isfull))
 
+    def test_winner(self):
         # test if code detects winner
         self.assertEqual(1, vgP.winner_validation(1, self.winner_in_row1))
         self.assertEqual(1, vgP.winner_validation(1, self.winner_in_row2))
@@ -222,8 +252,10 @@ class Testcase(unittest.TestCase):
         self.assertEqual(1, vgP.winner_validation(1, self.winner_dia_r_to_l1))
         self.assertEqual(1, vgP.winner_validation(1, self.winner_dia_r_to_l2))
 
+    def test_draw(self):
         # test if code detects draw
         self.assertEqual(99, vgP.winner_validation(1, self.winner_draw_isfull))
+
 
 
 if __name__ == '__main__':
