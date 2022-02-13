@@ -31,10 +31,8 @@ class Playfield():
         return play_data
 
 
-
-
     def winner_check(self, p_data, p_name, p_ID):
-        ''' checks after every move if game is won/draw and calls winselector if true
+        ''' passes over to winner_validation every move and calls winselector if p_ID != 69
 
         Parameters
         ----------
@@ -51,15 +49,35 @@ class Playfield():
         eg = Endgame()
 
         # check 4 in row
+        p_ID = self.winner_validation(p_ID, p_data)
+        if p_ID != 69:
+            eg.winselector(p_ID, p_name)
+
+
+    def winner_validation(self, p_ID, p_data):
+        '''checks if game is won/draw and calls winselector if true
+
+        Parameters
+        ----------
+        p_ID: ID of current player: 1 (player 1), 2 (player 2), 3 (AI)
+        p_data: the playfield data
+
+        Returns
+        -------
+        69: if no winner/draw
+        p_ID: if winner/draw
+        '''
+
+        #check 4 in row
         row = 0
         while row <= 6:
             col = 0
             while col <= 2:
                 if (p_data[row][col] == p_ID and p_data[row][col + 1] == p_ID and
-                p_data[row][col + 2] == p_ID and p_data[row][col + 3] == p_ID):
-                    eg.winselector(p_ID, p_name)
+                        p_data[row][col + 2] == p_ID and p_data[row][col + 3] == p_ID):
+                    return p_ID
                 col += 1
-            row +=1
+            row += 1
 
         # check 4 in column
         col = 0
@@ -68,7 +86,7 @@ class Playfield():
             while row <= 3:
                 if (p_data[row][col] == p_ID and p_data[row + 1][col] == p_ID and
                 p_data[row + 2][col] == p_ID and p_data[row + 3][col] == p_ID):
-                    eg.winselector(p_ID, p_name)
+                    return p_ID
                 row += 1
             col += 1
 
@@ -83,11 +101,11 @@ class Playfield():
                 while col <= 2:
                     if (p_data[row][col] == p_ID and p_data[row + 1][col + 1] == p_ID
                      and p_data[row + 2][col + 2] == p_ID and p_data[row + 3][col + 3] == p_ID):
-                        eg.winselector(p_ID, p_name)
+                        return p_ID
                     col += 1
                 if (p_data[row][col] == p_ID and p_data[row + 1][col - 1] == p_ID
                         and p_data[row + 2][col - 2] == p_ID and p_data[row + 3][col - 3] == p_ID):
-                    eg.winselector(p_ID, p_name)
+                    return p_ID
                 col += 1
             row += 1
 
@@ -100,8 +118,10 @@ class Playfield():
             col += 1
         if non_zero_counter == 6:
             p_ID = 99
-            eg.winselector(p_ID, p_name)
+            return p_ID
 
+        # no winner/draw
+        return 69 #random number used to prevent winner_check to go into Endgame
 
 
     def play_data_update(self, selected_field, p_data, p_name, p_ID):
@@ -116,14 +136,35 @@ class Playfield():
         while notfinished:
             line = 6
             while line >= 0:
-                if p_data[line][selected_field-1] == 0:
+                validation = self.play_data_validation(line, selected_field, p_data)
+                if validation:
                     p_data[line][selected_field-1] = p_ID
                     return p_data
                 line -= 1
             if p_ID != 3:
                 print(f'Column {selected_field} is full and cannot be selected')
-            selected_field = Players().player_move(p_name)
+                selected_field = Players().player_move(p_name)
+            else:
+                selected_field = random.randint(0, 5)
 
+
+    def play_data_validation(self, line, selected_field, p_data):
+        ''' validates if the selected column is full
+
+        Parameters
+        ----------
+        line: actual line
+        selected_field: field that is selected
+        p_data: playfield with play data
+
+        Returns
+        -------
+        True: column is not full, field can be selected
+        False: column is full, field cannot be selected
+        '''
+        if p_data[line][selected_field-1] == 0:
+            return True
+        return False
 
 
     def print_playfield(self, p_data):
@@ -168,7 +209,6 @@ class Playfield():
         for row in playfield:
             listToStr = ' '.join(map(str, row))
             print(listToStr)
-
 
 
     def cleansreen(self):
@@ -241,14 +281,43 @@ class Players():
             if selected_field == "Q" or selected_field == "q":
                 print("\nTHANK YOU FOR PLAYING")
                 exit()
-            try:
-                selected_field = int(selected_field)
-                if selected_field >= 1 and selected_field <= 6:
-                    return selected_field
-                else:
-                    print(f'No valid input')
-            except:
+            validation = self.player_move_validation(selected_field)
+            if validation:
+                return int(selected_field)
+            else:
                 print(f'No valid input')
+            # try:
+            #     selected_field = int(selected_field)
+            #     if selected_field >= 1 and selected_field <= 6:
+            #         return selected_field
+            #     else:
+            #         print(f'No valid input')
+            # except:
+            #     print(f'No valid input')
+
+
+
+    def player_move_validation(self, selected_field):
+        '''validates if player input is correct
+
+        Parameters
+        ----------
+        selected_field: player input
+
+        Returns
+        -------
+        True: input is correct
+        False: input is incorrect
+        '''
+        try:
+            selected_field = int(selected_field)
+            if selected_field >= 1 and selected_field <= 6:
+                return True
+            else:
+                return False
+        except:
+            return False
+
 
 
 
@@ -305,7 +374,6 @@ If none reaches to put 4 pieces in a line, its a draw.
             self.gameloop(dec)
         else:
             self.ai_vs_human()
-
 
 
     def gameloop(self, fiend):
@@ -421,7 +489,7 @@ class Endgame():
         nothing
         '''
         print("******************************************\n"
-        "I am sorry loser", p_name, "won.\n"
+        "I am sorry loser,", p_name, "won.\n"
         "******************************************\n")
         self.newgame()
 
