@@ -1,0 +1,221 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Design &mdash; viergewinnt 1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> viergewinnt
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">viergewinnt</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">viergewinnt</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Design</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/design.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="design">
+<h1>Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h1>
+<p>Description of implementation</p>
+<section id="startup-of-the-game">
+<h2>Startup of the game<a class="headerlink" href="#startup-of-the-game" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>The titlescreen had to be as simple as possible so we did that with a simple print function and implemented it to the main file.</p></li>
+<li><p>At startup the game asks if you want to play against another human or AI. This has been implemented with a function named “ai_vs_human”. By pressing “2” you’ll be playing against AI and by pressing “1” you’ll be playing against another human player.</p></li>
+<li><p>For clarification, which player begins and next move etc., the program aks you for your name. Over the whole game, the name of the player which has to do a move is shown. We also used the variable for the end screen to show which player has won the game. We assigned player 1 with “X” and player 2 with “O”.</p></li>
+<li><p>For getting the rules of the game, we created “ruleset” which shows by every start of the game the rules of the game.</p></li>
+</ul>
+</section>
+<section id="game-itself">
+<h2>Game itself<a class="headerlink" href="#game-itself" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>to set up a move for the game, we added a input for “player_moves” + an validation check, which checks if the moves are valid or not. (e.g. you cannot place a playerblock on a field which is already taken</p></li>
+<li><p>We decided to save the moves in a list with 0, 1, 2 and 3 (empty=0, player 1=1, player 2=2 and 3 = AI) because it was easier for us to handle if it was a hit or a no hit.</p></li>
+<li><p>We decided to create a list called “print_playfield” that is purely used for printing the “play_data” in convenient format, the information of play_data is routed through a “for loop” to correctly populate the playfield with “X”, “O” and “empty”.</p></li>
+<li><p>Our computer opponent, called “Herbert Tryhard”, is a simple KI which places its moves by creating a random number which runs through validation check and then places the move on the playfield.</p></li>
+</ul>
+</section>
+<section id="after-the-game">
+<h2>After the game<a class="headerlink" href="#after-the-game" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>After checking who won the game we needed an end screen. One screen if a player wins, one if the AI wins and another one if its a draw. After the screen, the player has the opportunity to start a new game by pressing “Y”, any other key will exit the game.</p></li>
+<li><p>If it’s a draw, another end screen will be shown.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2022, Haim, Pfeiler
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

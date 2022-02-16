@@ -1,0 +1,237 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Design Pattern: Iterator &mdash; viergewinnt 1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> viergewinnt
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">viergewinnt</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">viergewinnt</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Design Pattern: <em>Iterator</em></li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pattern.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="design-pattern-iterator">
+<h1>Design Pattern: <em>Iterator</em><a class="headerlink" href="#design-pattern-iterator" title="Permalink to this headline">¶</a></h1>
+<p>In python, you can choose to iterate an array either with a “while”, or with a “for” loop. The difference is, that the for-loop is built into python and will iterate through the full array, whereas the while-loop needs a manual setup. A while-loop can be stopped at a choosen event, the for-loop will always run through every element of the array until the very last element.</p>
+<section id="the-for-loop">
+<h2>The “for”-loop<a class="headerlink" href="#the-for-loop" title="Permalink to this headline">¶</a></h2>
+<p><img alt="sieht so aus" src="https://www.tutorialandexample.com/wp-content/uploads/2019/08/php-while-loop.png" /></p>
+<p>The for-loop consists of the builtin methods <code class="docutils literal notranslate"><span class="pre">ìter()</span></code> and <code class="docutils literal notranslate"><span class="pre">next()</span></code>. If the array is no container, a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code> is raised. <code class="docutils literal notranslate"><span class="pre">next()</span></code> will continue until  the container is empty and raise the exception <code class="docutils literal notranslate"><span class="pre">StopIteration</span></code>as an end point.</p>
+<p>A most basic for-loop can look like this:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">bucket</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;a&quot;</span>, <span class="s2">&quot;c&quot;</span>, <span class="s2">&quot;b&quot;</span>, <span class="s2">&quot;d&quot;</span><span class="o">]</span>
+<span class="k">for</span> items <span class="k">in</span> bucket:
+    print<span class="o">(</span>items<span class="o">)</span>
+
+&gt;&gt; a
+&gt;&gt; c
+&gt;&gt; b
+&gt;&gt; d
+</pre></div>
+</div>
+<p>The array <code class="docutils literal notranslate"><span class="pre">bucket</span></code> is printed in exactly the same order, as the content appears in the array itself.</p>
+</section>
+<section id="nested-loop">
+<h2>Nested Loop<a class="headerlink" href="#nested-loop" title="Permalink to this headline">¶</a></h2>
+<p>Loops can be nested, meaning that a loop itselfs contains at least one other additional loop. This is especially helpful, if the code should iterate through an array in the style of nested lists, like <code class="docutils literal notranslate"><span class="pre">nested_list</span> <span class="pre">=</span> <span class="pre">[[&quot;item1&quot;,&quot;item2&quot;],[&quot;item2&quot;,&quot;item2&quot;]]</span></code>. A nested loop is able to access each item within each list contained in the variable <code class="docutils literal notranslate"><span class="pre">nested_list</span></code>. A basic example code looks like this:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">nested_list</span> <span class="o">=</span> <span class="o">[[</span><span class="s2">&quot;item1&quot;</span>,<span class="s2">&quot;item2&quot;</span><span class="o">]</span>,<span class="o">[</span><span class="s2">&quot;itemx&quot;</span>,<span class="s2">&quot;itemy&quot;</span><span class="o">]]</span>
+<span class="k">for</span> list <span class="k">in</span> nested_list:
+    <span class="k">for</span> item <span class="k">in</span> list:
+        print<span class="o">(</span>item<span class="o">)</span>
+
+&gt;&gt; item1
+&gt;&gt; item2
+&gt;&gt; itemx
+&gt;&gt; itemy
+</pre></div>
+</div>
+<p><img alt="nested_for_loop" src="https://pynative.com/wp-content/uploads/2021/06/python-nested-for-loop.png" /></p>
+</section>
+<section id="sources">
+<h2>Sources<a class="headerlink" href="#sources" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://python-patterns.guide/gang-of-four/iterator/">python-patterns-guide</a></p></li>
+<li><p><a class="reference external" href="https://refactoring.guru/design-patterns/iterator">refactoring.guru</a></p></li>
+<li><p><a class="reference external" href="https://pynative.com/python-nested-loops/">pynative</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2022, Haim, Pfeiler
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,708 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>viergewinnt.main &mdash; viergewinnt 1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> viergewinnt
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">viergewinnt</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">viergewinnt</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>viergewinnt.main</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for viergewinnt.main</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span><span class="p">,</span> <span class="n">name</span>
+
+
+
+<div class="viewcode-block" id="Playfield"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Playfield">[docs]</a><span class="k">class</span> <span class="nc">Playfield</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39; initializes the playfield</span>
+<span class="sd">        prints the playfield</span>
+<span class="sd">        updates the played moves</span>
+<span class="sd">        reviews if the game is won/draw</span>
+<span class="sd">        cleans the screen after after each move</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="Playfield.playdata_init"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Playfield.playdata_init">[docs]</a>    <span class="k">def</span> <span class="nf">playdata_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; initializes the playfield data</span>
+<span class="sd">        The playfield data is stored in a list containing 0 (empty), 1 (player 1), 2 (player 2), 3 (AI)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        play_data: the updated playfield data</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">play_data</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>  <span class="c1"># row 7</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>  <span class="c1"># row 6</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>  <span class="c1"># row 5</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>  <span class="c1"># row 4</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>  <span class="c1"># row 3</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>  <span class="c1"># row 2</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># bottom row</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">play_data</span></div>
+
+
+<div class="viewcode-block" id="Playfield.winner_check"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Playfield.winner_check">[docs]</a>    <span class="k">def</span> <span class="nf">winner_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p_data</span><span class="p">,</span> <span class="n">p_name</span><span class="p">,</span> <span class="n">p_ID</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; passes over to winner_validation every move and calls winselector if p_ID != 69</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        p_data: the playfield data</span>
+<span class="sd">        p_name: name of current playner</span>
+<span class="sd">        p_ID: ID of current player: 1 (player 1), 2 (player 2), 3 (AI)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        nothing</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">eg</span> <span class="o">=</span> <span class="n">Endgame</span><span class="p">()</span>
+
+        <span class="c1"># check 4 in row</span>
+        <span class="n">p_ID</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">winner_validation</span><span class="p">(</span><span class="n">p_ID</span><span class="p">,</span> <span class="n">p_data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">p_ID</span> <span class="o">!=</span> <span class="mi">69</span><span class="p">:</span>
+            <span class="n">eg</span><span class="o">.</span><span class="n">winselector</span><span class="p">(</span><span class="n">p_ID</span><span class="p">,</span> <span class="n">p_name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Playfield.winner_validation"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Playfield.winner_validation">[docs]</a>    <span class="k">def</span> <span class="nf">winner_validation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p_ID</span><span class="p">,</span> <span class="n">p_data</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;checks if game is won/draw and calls winselector if true</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        p_ID: ID of current player: 1 (player 1), 2 (player 2), 3 (AI)</span>
+<span class="sd">        p_data: the playfield data</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        69: if no winner/draw</span>
+<span class="sd">        p_ID: if winner/draw</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c1">#check 4 in row</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">row</span> <span class="o">&lt;=</span> <span class="mi">6</span><span class="p">:</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">while</span> <span class="n">col</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">p_data</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">==</span> <span class="n">p_ID</span> <span class="ow">and</span> <span class="n">p_data</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">p_ID</span> <span class="ow">and</span>
+                        <span class="n">p_data</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">p_ID</span> <span class="ow">and</span> <span class="n">p_data</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="n">p_ID</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">p_ID</span>
+                <span class="n">col</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">row</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># check 4 in column</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">col</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">while</span> <span class="n">row</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">p_data</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">==</span> <span class="n">p_ID</span> <span class="ow">and</span> <span class="n">p_data</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">==</span> <span class="n">p_ID</span> <span class="ow">and</span>
+                <span class="n">p_data</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">2</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">==</span> <span class="n">p_ID</span> <span class="ow">and</span> <span class="n">p_data</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">3</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">==</span> <span class="n">p_ID</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">p_ID</span>
+                <span class="n">row</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">col</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># check 4 diagonal</span>
+        <span class="c1"># starts at 0/0 and checks diagonal left top to right bottom until column index 2</span>
+        <span class="c1"># resumes at 3/0 and checks diagonal right top to left bottom until column index 5</span>
+        <span class="c1"># jumps into next row if no winner found</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">row</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">while</span> <span class="n">col</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">:</span>
+                <span class="k">while</span> <span class="n">col</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">p_data</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">==</span> <span class="n">p_ID</span> <span class="ow">and</span> <span class="n">p_data</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">p_ID</span>
+                     <span class="ow">and</span> <span class="n">p_data</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">2</span><span class="p">][</span><span class="n">col</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">p_ID</span> <span class="ow">and</span> <span class="n">p_data</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">3</span><span class="p">][</span><span class="n">col</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="n">p_ID</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="n">p_ID</span>
+                    <span class="n">col</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">p_data</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">==</span> <span class="n">p_ID</span> <span class="ow">and</span> <span class="n">p_data</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">col</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">p_ID</span>
+                        <span class="ow">and</span> <span class="n">p_data</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">2</span><span class="p">][</span><span class="n">col</span> <span class="o">-</span> <span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">p_ID</span> <span class="ow">and</span> <span class="n">p_data</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="mi">3</span><span class="p">][</span><span class="n">col</span> <span class="o">-</span> <span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="n">p_ID</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">p_ID</span>
+                <span class="n">col</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">row</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># check draw</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">non_zero_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">col</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">p_data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">non_zero_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">col</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">non_zero_counter</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+            <span class="n">p_ID</span> <span class="o">=</span> <span class="mi">99</span>
+            <span class="k">return</span> <span class="n">p_ID</span>
+
+        <span class="c1"># no winner/draw</span>
+        <span class="k">return</span> <span class="mi">69</span> <span class="c1">#random number used to prevent winner_check to go into Endgame</span></div>
+
+
+<div class="viewcode-block" id="Playfield.play_data_update"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Playfield.play_data_update">[docs]</a>    <span class="k">def</span> <span class="nf">play_data_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selected_field</span><span class="p">,</span> <span class="n">p_data</span><span class="p">,</span> <span class="n">p_name</span><span class="p">,</span> <span class="n">p_ID</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Checks if selected column is free to select + places move</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        p_data: playfield data updated with player token</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">notfinished</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">while</span> <span class="n">notfinished</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="mi">6</span>
+            <span class="k">while</span> <span class="n">line</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">validation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">play_data_validation</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">selected_field</span><span class="p">,</span> <span class="n">p_data</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">validation</span><span class="p">:</span>
+                    <span class="n">p_data</span><span class="p">[</span><span class="n">line</span><span class="p">][</span><span class="n">selected_field</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">p_ID</span>
+                    <span class="k">return</span> <span class="n">p_data</span>
+                <span class="n">line</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">p_ID</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Column </span><span class="si">{</span><span class="n">selected_field</span><span class="si">}</span><span class="s1"> is full and cannot be selected&#39;</span><span class="p">)</span>
+                <span class="n">selected_field</span> <span class="o">=</span> <span class="n">Players</span><span class="p">()</span><span class="o">.</span><span class="n">player_move</span><span class="p">(</span><span class="n">p_name</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">selected_field</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Playfield.play_data_validation"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Playfield.play_data_validation">[docs]</a>    <span class="k">def</span> <span class="nf">play_data_validation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">selected_field</span><span class="p">,</span> <span class="n">p_data</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; validates if the selected column is full</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        line: actual line</span>
+<span class="sd">        selected_field: field that is selected</span>
+<span class="sd">        p_data: playfield with play data</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        True: column is not full, field can be selected</span>
+<span class="sd">        False: column is full, field cannot be selected</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">p_data</span><span class="p">[</span><span class="n">line</span><span class="p">][</span><span class="n">selected_field</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Playfield.print_playfield"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Playfield.print_playfield">[docs]</a>    <span class="k">def</span> <span class="nf">print_playfield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p_data</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Prints the playfield</span>
+<span class="sd">        This method is purely for optical reasons to print the playfield in an easy to read way</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        p_data: playfield data</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        printout of the playfield</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">playfield</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">[</span><span class="s2">&quot;| &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; |&quot;</span><span class="p">],</span>
+            <span class="p">[</span><span class="s2">&quot;| &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; |&quot;</span><span class="p">],</span>
+            <span class="p">[</span><span class="s2">&quot;| &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; |&quot;</span><span class="p">],</span>
+            <span class="p">[</span><span class="s2">&quot;| &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; |&quot;</span><span class="p">],</span>
+            <span class="p">[</span><span class="s2">&quot;| &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; |&quot;</span><span class="p">],</span>
+            <span class="p">[</span><span class="s2">&quot;| &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; |&quot;</span><span class="p">],</span>
+            <span class="p">[</span><span class="s2">&quot;| &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot; |&quot;</span><span class="p">],</span>
+            <span class="p">[</span><span class="s2">&quot; -&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;- &quot;</span><span class="p">],</span>
+            <span class="p">[</span><span class="s2">&quot;  &quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;4&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;5&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;6&quot;</span><span class="p">,</span> <span class="s2">&quot;  &quot;</span><span class="p">]</span>
+        <span class="p">]</span>
+
+        <span class="n">playfield_pos</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">playfield_row</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">p_data</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">pos</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">playfield</span><span class="p">[</span><span class="n">playfield_row</span><span class="p">][</span><span class="n">playfield_pos</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;X&quot;</span>
+                <span class="k">if</span> <span class="n">pos</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">pos</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="n">playfield</span><span class="p">[</span><span class="n">playfield_row</span><span class="p">][</span><span class="n">playfield_pos</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;O&quot;</span>
+                <span class="n">playfield_pos</span> <span class="o">+=</span> <span class="mi">2</span>
+            <span class="n">playfield_row</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">playfield_pos</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">playfield</span><span class="p">:</span>
+            <span class="n">listToStr</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">row</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">listToStr</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Playfield.cleansreen"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Playfield.cleansreen">[docs]</a>    <span class="k">def</span> <span class="nf">cleansreen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;clears the playing field after every move</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        noting</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;nt&quot;</span><span class="p">:</span>
+            <span class="n">_</span> <span class="o">=</span> <span class="n">system</span><span class="p">(</span><span class="s1">&#39;cls&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">_</span> <span class="o">=</span> <span class="n">system</span><span class="p">(</span><span class="s1">&#39;clear&#39;</span><span class="p">)</span></div></div>
+
+
+
+<div class="viewcode-block" id="Players"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Players">[docs]</a><span class="k">class</span> <span class="nc">Players</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39; stores player names</span>
+<span class="sd">        allocates player ID to player name</span>
+<span class="sd">        verifies player moves</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+<div class="viewcode-block" id="Players.startup"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Players.startup">[docs]</a>    <span class="k">def</span> <span class="nf">startup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p_ID</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Asks for player names (input)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        p_ID: number of player (1 or 2)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        p_name: name of the player that was added via input</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">p_name</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Player </span><span class="si">{</span><span class="n">p_ID</span><span class="si">}</span><span class="s1"> please enter your name: &#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">p_name</span></div>
+
+
+
+<div class="viewcode-block" id="Players.player_change"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Players.player_change">[docs]</a>    <span class="k">def</span> <span class="nf">player_change</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p_ID</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;changes the actual player</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        p_ID: number of actual player; 1 = player1, 2 = player2</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        p1 or p2, depending on who the actual player was</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">p_ID</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">p2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">p1</span></div>
+
+
+
+<div class="viewcode-block" id="Players.player_move"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Players.player_move">[docs]</a>    <span class="k">def</span> <span class="nf">player_move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p_name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;gets input of desired move and validates, if input is correct</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        p_name: name of actual player</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        field: the column in which the player wants to place the token</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">notfinished</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">while</span> <span class="n">notfinished</span><span class="p">:</span>
+            <span class="n">selected_field</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="si">{</span><span class="n">p_name</span><span class="si">}</span><span class="s1">, enter the column you want to place your token or enter q/Q to quit &gt;&gt; &#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">selected_field</span> <span class="o">==</span> <span class="s2">&quot;Q&quot;</span> <span class="ow">or</span> <span class="n">selected_field</span> <span class="o">==</span> <span class="s2">&quot;q&quot;</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">THANK YOU FOR PLAYING&quot;</span><span class="p">)</span>
+                <span class="n">exit</span><span class="p">()</span>
+            <span class="n">validation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_move_validation</span><span class="p">(</span><span class="n">selected_field</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">validation</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">selected_field</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No valid input&#39;</span><span class="p">)</span></div>
+            <span class="c1"># try:</span>
+            <span class="c1">#     selected_field = int(selected_field)</span>
+            <span class="c1">#     if selected_field &gt;= 1 and selected_field &lt;= 6:</span>
+            <span class="c1">#         return selected_field</span>
+            <span class="c1">#     else:</span>
+            <span class="c1">#         print(f&#39;No valid input&#39;)</span>
+            <span class="c1"># except:</span>
+            <span class="c1">#     print(f&#39;No valid input&#39;)</span>
+
+
+
+<div class="viewcode-block" id="Players.player_move_validation"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Players.player_move_validation">[docs]</a>    <span class="k">def</span> <span class="nf">player_move_validation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selected_field</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;validates if player input is correct</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        selected_field: player input</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        True: input is correct</span>
+<span class="sd">        False: input is incorrect</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">selected_field</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">selected_field</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">selected_field</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">selected_field</span> <span class="o">&lt;=</span> <span class="mi">6</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div></div>
+
+
+
+
+<div class="viewcode-block" id="Game"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Game">[docs]</a><span class="k">class</span> <span class="nc">Game</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39; runs the game</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pf</span> <span class="o">=</span> <span class="n">Playfield</span><span class="p">()</span>
+    <span class="n">pf</span><span class="o">.</span><span class="n">cleansreen</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="Game.titlescreen"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Game.titlescreen">[docs]</a>    <span class="k">def</span> <span class="nf">titlescreen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;prints titlescreen</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        nothing</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">***********************************</span>
+<span class="s1">XOXO        4 gewinnt          XOXO</span>
+<span class="s1">***********************************</span>
+<span class="s1">    &#39;&#39;&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Game.rules_set"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Game.rules_set">[docs]</a>    <span class="k">def</span> <span class="nf">rules_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;print rules of the game</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        nothing</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">RULES OF THE GAME:</span>
+<span class="s1">The game is played on a vertical board which has seven columns and six rows. </span>
+<span class="s1">The aim for both players is to make a straight line of four OWN pieces (in our version of the game the pieces will be</span>
+<span class="s1">&quot;X&quot; and &quot;O&quot;). The Line can be vertical, horizontal or diagonal. Moves are made alternatively, one by turn.</span>
+<span class="s1">If none reaches to put 4 pieces in a line, its a draw. </span>
+<span class="s1">        &#39;&#39;&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Game.ai_vs_human"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Game.ai_vs_human">[docs]</a>    <span class="k">def</span> <span class="nf">ai_vs_human</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;asks if player wants to play pvp or pvc</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dec: as parameter for the gameloop; holds information if opponent is AI or human</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">dec</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;To play against an human opponent press 1, to play against the computer press 2. To exit press q/Q &gt;&gt; &#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dec</span> <span class="o">==</span> <span class="s2">&quot;q&quot;</span> <span class="ow">or</span> <span class="n">dec</span> <span class="o">==</span> <span class="s2">&quot;Q&quot;</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Good Bye!&quot;</span><span class="p">)</span>
+            <span class="n">exit</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">dec</span> <span class="o">==</span> <span class="s2">&quot;1&quot;</span> <span class="ow">or</span> <span class="n">dec</span> <span class="o">==</span> <span class="s2">&quot;2&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gameloop</span><span class="p">(</span><span class="n">dec</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ai_vs_human</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Game.gameloop"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Game.gameloop">[docs]</a>    <span class="k">def</span> <span class="nf">gameloop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fiend</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; the actual game</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fiend: contains information, if pvp (1) or pvc (2)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        nothing</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">Players</span><span class="p">()</span>
+        <span class="n">pf</span> <span class="o">=</span> <span class="n">Playfield</span><span class="p">()</span>
+        <span class="n">p1_name</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">startup</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">fiend</span> <span class="o">==</span> <span class="s2">&quot;1&quot;</span><span class="p">:</span>
+            <span class="n">p2_name</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">startup</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">p2_name</span> <span class="o">=</span> <span class="s2">&quot;Herbert Tryhard&quot;</span>
+        <span class="n">p_ID</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">p_name_cur</span> <span class="o">=</span> <span class="n">p1_name</span>
+        <span class="n">p_data</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">playdata_init</span><span class="p">()</span>
+        <span class="n">pf</span><span class="o">.</span><span class="n">print_playfield</span><span class="p">(</span><span class="n">p_data</span><span class="p">)</span>
+
+        <span class="n">notfinished</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">while</span> <span class="n">notfinished</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">p_ID</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">selection</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">selection</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">player_move</span><span class="p">(</span><span class="n">p_name_cur</span><span class="p">)</span>
+            <span class="n">p_data</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">play_data_update</span><span class="p">(</span><span class="n">selection</span><span class="p">,</span> <span class="n">p_data</span><span class="p">,</span> <span class="n">p_name_cur</span><span class="p">,</span> <span class="n">p_ID</span><span class="p">)</span>
+            <span class="n">pf</span><span class="o">.</span><span class="n">cleansreen</span><span class="p">()</span>
+            <span class="n">pf</span><span class="o">.</span><span class="n">print_playfield</span><span class="p">(</span><span class="n">p_data</span><span class="p">)</span>
+            <span class="n">pf</span><span class="o">.</span><span class="n">winner_check</span><span class="p">(</span><span class="n">p_data</span><span class="p">,</span> <span class="n">p_name_cur</span><span class="p">,</span> <span class="n">p_ID</span><span class="p">)</span>
+
+            <span class="n">p_name_cur</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">player_change</span><span class="p">(</span><span class="n">p_ID</span><span class="p">,</span> <span class="n">p1_name</span><span class="p">,</span> <span class="n">p2_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">p_ID</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">fiend</span> <span class="o">==</span> <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="c1">#fiend == human</span>
+                <span class="n">p_ID</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="k">elif</span> <span class="n">p_ID</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">fiend</span> <span class="o">==</span> <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="c1">#fiend == AI</span>
+                <span class="n">p_ID</span> <span class="o">=</span> <span class="mi">3</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">p_ID</span> <span class="o">=</span> <span class="mi">1</span></div></div>
+
+
+
+
+<div class="viewcode-block" id="Endgame"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Endgame">[docs]</a><span class="k">class</span> <span class="nc">Endgame</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39; checks after every move if game is won</span>
+<span class="sd">        prints the screen for the winner</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+<div class="viewcode-block" id="Endgame.winselector"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Endgame.winselector">[docs]</a>    <span class="k">def</span> <span class="nf">winselector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p_ID</span><span class="p">,</span> <span class="n">p_name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;selects the correct ending screen</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        p_ID: ID of actual player</span>
+<span class="sd">        p_name: name of actual player</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        nothing</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">p_ID</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">human_win</span><span class="p">(</span><span class="n">p_name</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">p_ID</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ai_win</span><span class="p">(</span><span class="n">p_name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Endgame.newgame"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Endgame.newgame">[docs]</a>    <span class="k">def</span> <span class="nf">newgame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;asks player whether a new game shall be played or not</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        nothing</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">Game</span><span class="p">()</span>
+        <span class="n">newgame</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;If you want to play another round enter y/Y, all other commands will quit &gt;&gt; &#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">newgame</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span> <span class="ow">or</span> <span class="n">newgame</span> <span class="o">==</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">ai_vs_human</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Thank you for playing!&#39;</span><span class="p">)</span>
+            <span class="n">exit</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="Endgame.human_win"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Endgame.human_win">[docs]</a>    <span class="k">def</span> <span class="nf">human_win</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p_name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;ending screen when human player won</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        p_name: name of actual player</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        nothing</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;******************************************</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;CONGRATULATIONS&quot;</span><span class="p">,</span> <span class="n">p_name</span><span class="p">,</span> <span class="s2">&quot;, you won!</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;******************************************</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newgame</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Endgame.ai_win"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Endgame.ai_win">[docs]</a>    <span class="k">def</span> <span class="nf">ai_win</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p_name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;ending screen when ai won</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        p_name: name of ai</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        nothing</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;******************************************</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;I am sorry loser,&quot;</span><span class="p">,</span> <span class="n">p_name</span><span class="p">,</span> <span class="s2">&quot;won.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;******************************************</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newgame</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Endgame.draw"><a class="viewcode-back" href="../../viergewinnt.html#viergewinnt.main.Endgame.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;ending screen when draw (no winner)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        nothing</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;******************************************</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;Oh no, there is no winner...</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;******************************************</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newgame</span><span class="p">()</span></div></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39; runs the game</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">Game</span><span class="p">()</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">titlescreen</span><span class="p">()</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">rules_set</span><span class="p">()</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">ai_vs_human</span><span class="p">()</span>
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2022, Haim, Pfeiler
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
